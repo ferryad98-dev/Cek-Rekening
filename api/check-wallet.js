@@ -18,17 +18,11 @@ export default async function handler(req, res) {
   }
 
   try {
-  const response = await fetch('https://rfpdev.me/api/check-wallet', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://rfpdev.me',
-    'Referer': 'https://rfpdev.me/',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  },
-  body: JSON.stringify({ phone_number, wallet_code, api_key: apiKey }),
-  });
+    const response = await fetch('https://rfpdev.me/api/check-wallet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ phone_number, wallet_code, api_key: apiKey }),
+    });
 
     const text = await response.text();
     let data;
