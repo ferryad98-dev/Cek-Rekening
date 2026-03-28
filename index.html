@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cek Rekening & E-Wallet</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --border: #252a3a;
+    --accent: #4f8fff;
+    --accent2: #38f5b0;
+    --danger: #ff5c5c;
+    --text: #e8ecf4;
+    --muted: #6b7592;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Sora', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(79,143,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,143,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* Glow blob */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(79,143,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .wrapper {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .header .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(79,143,255,0.1);
+    border: 1px solid rgba(79,143,255,0.25);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .header p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+  }
+
+  /* Tab switcher */
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(79,143,255,0.35);
+  }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(79,143,255,0.4), transparent);
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  input, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79,143,255,0.15);
+  }
+
+  input::placeholder { color: var(--muted); font-family: var(--sans); }
+
+  .select-wrap {
+    position: relative;
+  }
+
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    font-size: 0.9rem;
+  }
+
+  select option { background: #1c2030; }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: #6aa3ff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(79,143,255,0.4);
+  }
+
+  .btn:active:not(:disabled) { transform: translateY(0); }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Result box */
+  .result {
+    margin-top: 1.5rem;
+    border-radius: 14px;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+    display: none;
+  }
+
+  .result.show { display: block; }
+
+  .result-header {
+    padding: 10px 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .result.success .result-header {
+    background: rgba(56,245,176,0.12);
+    color: var(--accent2);
+    border-bottom: 1px solid rgba(56,245,176,0.15);
+  }
+
+  .result.error .result-header {
+    background: rgba(255,92,92,0.12);
+    color: var(--danger);
+    border-bottom: 1px solid rgba(255,92,92,0.15);
+  }
+
+  .result-body {
+    padding: 1.25rem 1.5rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .result.success .result-body { border-color: rgba(56,245,176,0.2); }
+  .result.error .result-body { border-color: rgba(255,92,92,0.2); }
+
+  .result-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .result-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .meta-item { }
+
+  .meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .meta-value {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot.green { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+  .dot.red   { background: var(--danger);  box-shadow: 0 0 6px var(--danger); }
+
+  .footer-note {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* Panel visibility */
+  .panel { display: none; }
+  .panel.active { display: block; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="badge">
+      <span>●</span> Transfer Verification Tool
+    </div>
+    <h1>Cek <span>Rekening</span> &amp;<br/>E-Wallet</h1>
+    <p>Verifikasi nama pemilik sebelum transfer dana</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('bank')">
+      🏦 Bank
+    </button>
+    <button class="tab-btn" onclick="switchTab('ewallet')">
+      📱 E-Wallet
+    </button>
+  </div>
+
+  <!-- BANK PANEL -->
+  <div class="panel active" id="panel-bank">
+    <div class="card">
+      <div class="field">
+        <label>Pilih Bank</label>
+        <div class="select-wrap">
+          <select id="bank-select">
+            <option value="">-- Pilih Bank --</option>
+            <option value="bca">BCA</option>
+            <option value="bni">BNI</option>
+            <option value="bri">BRI</option>
+            <option value="mandiri">MANDIRI</option>
+            <option value="cimb_niaga">CIMB NIAGA</option>
+            <option value="bsi">BSI</option>
+            <option value="btn">BTN</option>
+            <option value="permata">PERMATA</option>
+            <option value="danamon">DANAMON</option>
+            <option value="maybank">MAYBANK</option>
+            <option value="ocbc">OCBC NISP</option>
+            <option value="panin">PANIN</option>
+            <option value="bukopin">BUKOPIN</option>
+            <option value="mega">BANK MEGA</option>
+            <option value="sinarmas">SINARMAS</option>
+            <option value="bank_kesejahteraan_ekonomi">SEABANK/BANK BKE</option>
+            <option value="jago">BANK JAGO</option>
+            <option value="neo_commerce">BANK NEO COMMERCE</option>
+            <option value="allo">ALLO BANK</option>
+            <option value="raya">BANK RAYA</option>
+            <option value="sahabat_sampoerna">SAHABAT SAMPOERNA</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Nomor Rekening</label>
+        <input type="text" id="bank-number" placeholder="Masukkan nomor rekening" inputmode="numeric" />
+      </div>
+      <button class="btn" id="btn-bank" onclick="checkBank()">
+        <span id="btn-bank-text">🔍 Cek Rekening</span>
+      </button>
+    </div>
+
+    <div class="result" id="result-bank"></div>
+  </div>
+
+  <!-- EWALLET PANEL -->
+  <div class="panel" id="panel-ewallet">
+    <div class="card">
+      <div class="field">
+        <label>Pilih E-Wallet</label>
+        <div class="select-wrap">
+          <select id="ew-select">
+            <option value="">-- Pilih E-Wallet --</option>
+            <option value="wallet_dana">DANA</option>
+            <option value="wallet_ovo">OVO</option>
+            <option value="wallet_gopay">GoPay</option>
+            <option value="wallet_gopay_driver">GoPay Driver</option>
+            <option value="wallet_shopeepay">ShopeePay</option>
+            <option value="wallet_linkaja">LinkAja</option>
+            <option value="wallet_grab">Grab User</option>
+            <option value="wallet_isaku">iSaku</option>
+            <option value="wallet_astrapay">AstraPay</option>
+            <option value="qris">QRIS</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Nomor E-Wallet</label>
+        <input type="text" id="ew-number" placeholder="Masukkan nomor HP / e-wallet" inputmode="numeric" />
+      </div>
+      <button class="btn" id="btn-ew" onclick="checkEwallet()">
+        <span id="btn-ew-text">🔍 Cek E-Wallet</span>
+      </button>
+    </div>
+
+    <div class="result" id="result-ew"></div>
+  </div>
+
+  <p class="footer-note">Data hanya digunakan untuk verifikasi · Tidak disimpan</p>
+</div>
+
+<script>
+const API_KEY = '503c53df-222b-41f5-abb0-70563a22828a';
+const BASE    = 'https://rfpdev.me';
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'bank') || (i === 1 && tab === 'ewallet'));
+  });
+  document.getElementById('panel-bank').classList.toggle('active', tab === 'bank');
+  document.getElementById('panel-ewallet').classList.toggle('active', tab === 'ewallet');
+}
+
+function setLoading(btnId, textId, loading) {
+  const btn  = document.getElementById(btnId);
+  const text = document.getElementById(textId);
+  btn.disabled = loading;
+  text.innerHTML = loading
+    ? '<span class="spinner"></span>'
+    : (btnId === 'btn-bank' ? '🔍 Cek Rekening' : '🔍 Cek E-Wallet');
+}
+
+function showResult(id, type, data) {
+  const el = document.getElementById(id);
+  if (type === 'success') {
+    const name   = data.customer_name   || data.customer_name || '—';
+    const number = data.account_number  || data.phone_number  || '—';
+    const bankLabel = data.bank_name    || data.ewallet_name  || '—';
+    el.className = 'result show success';
+    el.innerHTML = `
+      <div class="result-header">
+        <span class="dot green"></span> Verifikasi Berhasil
+      </div>
+      <div class="result-body">
+        <div class="result-name">${escHtml(name)}</div>
+        <div class="result-meta">
+          <div class="meta-item">
+            <div class="meta-label">Nomor</div>
+            <div class="meta-value">${escHtml(number)}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Bank / Wallet</div>
+            <div class="meta-value">${escHtml(bankLabel)}</div>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    el.className = 'result show error';
+    el.innerHTML = `
+      <div class="result-header">
+        <span class="dot red"></span> Gagal
+      </div>
+      <div class="result-body">
+        <div style="color:var(--danger);font-size:0.9rem;">${escHtml(data)}</div>
+      </div>`;
+  }
+}
+
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function checkBank() {
+  const bank   = document.getElementById('bank-select').value;
+  const number = document.getElementById('bank-number').value.trim();
+  if (!bank || !number) { alert('Pilih bank dan masukkan nomor rekening.'); return; }
+
+  setLoading('btn-bank', 'btn-bank-text', true);
+  document.getElementById('result-bank').className = 'result';
+
+  try {
+    const res  = await fetch(`${BASE}/api/check-rekening`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ account_number: number, bank_code: bank, api_key: API_KEY })
+    });
+    const json = await res.json();
+    if (json.status === 'success' && json.data) {
+      showResult('result-bank', 'success', json.data);
+    } else {
+      showResult('result-bank', 'error', json.message || 'Rekening tidak ditemukan.');
+    }
+  } catch (e) {
+    showResult('result-bank', 'error', 'Gagal menghubungi server. Coba lagi.');
+  } finally {
+    setLoading('btn-bank', 'btn-bank-text', false);
+  }
+}
+
+async function checkEwallet() {
+  const wallet = document.getElementById('ew-select').value;
+  const number = document.getElementById('ew-number').value.trim();
+  if (!wallet || !number) { alert('Pilih e-wallet dan masukkan nomor.'); return; }
+
+  setLoading('btn-ew', 'btn-ew-text', true);
+  document.getElementById('result-ew').className = 'result';
+
+  try {
+    const res  = await fetch(`${BASE}/api/check-wallet`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone_number: number, wallet_code: wallet, api_key: API_KEY })
+    });
+    const json = await res.json();
+    if (json.status === 'success' && json.data) {
+      showResult('result-ew', 'success', json.data);
+    } else {
+      showResult('result-ew', 'error', json.message || 'E-wallet tidak ditemukan.');
+    }
+  } catch (e) {
+    showResult('result-ew', 'error', 'Gagal menghubungi server. Coba lagi.');
+  } finally {
+    setLoading('btn-ew', 'btn-ew-text', false);
+  }
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const bankActive = document.getElementById('panel-bank').classList.contains('active');
+  if (bankActive) checkBank(); else checkEwallet();
+});
+</script>
+</body>
+</html>
