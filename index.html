@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cek Rekening & E-Wallet MP1</title>
+<title>Cek Rekening & E-Wallet</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -320,9 +320,7 @@
   <div class="header">
     <div class="badge"><span>●</span> Transfer Verification Tool</div>
     <h1>Cek <span>Rekening</span> &amp;<br/>E-Wallet</h1>
-    <h1><span>MP1 PROJECT</span></h1>
-    <p>JANGAN SALAH PILIH</p>
-    <p>kalau ada - coba dihapus yaa</p>
+    <p>Verifikasi nama pemilik sebelum transfer dana</p>
   </div>
 
   <div class="tabs">
@@ -338,26 +336,26 @@
         <div class="select-wrap">
           <select id="bank-select">
             <option value="">-- Pilih Bank --</option>
-            <option value="bank_bca">BCA</option>
-            <option value="bank_bni">BNI</option>
-            <option value="bank_bri">BRI</option>
-            <option value="bank_mandiri">MANDIRI</option>
-            <option value="bank_cimb">CIMB NIAGA</option>
-            <option value="bank_bsm">BSI</option>
-            <option value="bank_btn">BTN</option>
-            <option value="bank_permata">PERMATA</option>
-            <option value="bank_danamon">DANAMON</option>
-            <option value="bank_bii">MAYBANK</option>
-            <option value="bank_ocbc">OCBC NISP</option>
-            <option value="bank_panin">PANIN</option>
-            <option value="bank_bukopin">BUKOPIN</option>
-            <option value="bank_mega">BANK MEGA</option>
-            <option value="bank_sinarmas">SINARMAS</option>
+            <option value="bca">BCA</option>
+            <option value="bni">BNI</option>
+            <option value="bri">BRI</option>
+            <option value="mandiri">MANDIRI</option>
+            <option value="cimb_niaga">CIMB NIAGA</option>
+            <option value="bsi">BSI</option>
+            <option value="btn">BTN</option>
+            <option value="permata">PERMATA</option>
+            <option value="danamon">DANAMON</option>
+            <option value="maybank">MAYBANK</option>
+            <option value="ocbc">OCBC NISP</option>
+            <option value="panin">PANIN</option>
+            <option value="bukopin">BUKOPIN</option>
+            <option value="mega">BANK MEGA</option>
+            <option value="sinarmas">SINARMAS</option>
             <option value="bank_kesejahteraan_ekonomi">SEABANK/BANK BKE</option>
-            <option value="bank_sakuku">SAKUKU</option>
-            <option value="bank_artos">BANK JAGO</option>
-            <option value="bank_yudha_bakti">BANK NEO COMMERCE</option>
-            <option value="bank_harda">ALLO BANK</option>
+            <option value="jago">BANK JAGO</option>
+            <option value="neo_commerce">BANK NEO COMMERCE</option>
+            <option value="allo">ALLO BANK</option>
+            <option value="raya">BANK RAYA</option>
           </select>
         </div>
       </div>
@@ -382,9 +380,11 @@
             <option value="">-- Pilih E-Wallet --</option>
             <option value="wallet_dana">DANA</option>
             <option value="wallet_ovo">OVO</option>
-            <option value="gopay_user">GOPAY</option>
+            <option value="wallet_gopay">GoPay</option>
+            <option value="wallet_gopay_driver">GoPay Driver</option>
             <option value="wallet_shopeepay">ShopeePay</option>
             <option value="wallet_linkaja">LinkAja</option>
+            <option value="wallet_grab">Grab User</option>
             <option value="wallet_isaku">iSaku</option>
             <option value="wallet_astrapay">AstraPay</option>
             <option value="qris">QRIS</option>
@@ -402,7 +402,7 @@
     <div class="result" id="result-ew"></div>
   </div>
 
-  <p class="footer-note">PROJECT SEDERHANA MP1</p>
+  <p class="footer-note">Data hanya digunakan untuk verifikasi · Tidak disimpan</p>
 </div>
 
 <script>
