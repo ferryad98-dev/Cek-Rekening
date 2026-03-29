@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('https://rfpdev.me/api/check-rekening', {
+    const response = await fetch('https://rfpdev.xyz/api/check-rekening', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ account_number, bank_code, api_key: apiKey }),
