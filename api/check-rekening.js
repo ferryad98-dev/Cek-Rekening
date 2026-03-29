@@ -11,16 +11,20 @@ export default async function handler(req, res) {
 
   try {
 const response = await fetch('https://rfpdev.xyz/api/check-rekening', {
-  method: 'POST',
-  headers: { 
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Referer': 'https://rfpdev.xyz/',
-    'Origin': 'https://rfpdev.xyz',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-  },
-  body: JSON.stringify({ account_number, bank_code, api_key: apiKey }),
-});
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+      },
+      body: JSON.stringify({ account_number, bank_code, api_key: apiKey }),
+    });
 
     const contentType = response.headers.get("content-type");
     
