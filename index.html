@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cek Rekening & E-Wallet MP1</title>
+<title>Cek Rekening & E-Wallet</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -224,12 +224,14 @@
 
   .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .btn .spinner {
+  .spinner {
     width: 18px; height: 18px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -320,7 +322,6 @@
   <div class="header">
     <div class="badge"><span>●</span> Transfer Verification Tool <span>●</span></div>
     <h1>Cek <span>Rekening</span> &amp;<br/>E-Wallet</h1>
-    <h1><span>MP1 PROJECT</span></h1>
     <p><b>JANGAN SALAH PILIH JENIS REKENING</b></p>
     <p><i>NOTE : hapus kalau ada tanda - biar gak error</i></p>
   </div>
@@ -337,37 +338,37 @@
         <label>Pilih Bank</label>
         <div class="select-wrap">
           <select id="bank-select">
-           <option value="">-- Pilih Bank --</option>
-           <option value="bank_bca">BCA</option>
-           <option value="bank_bni">BNI</option>
-           <option value="bank_bri">BRI</option>
-           <option value="bank_bsm">BSI (BANK SYARIAH INDONESIA)</option>
-           <option value="bank_btn">BTN</option>
-           <option value="bank_permata">PERMATA</option>
-           <option value="bank_sinarmas">SINARMAS</option>
-           <option value="bank_tabungan_pensiunan_nasional">BTPN / JENIUS / BTPN WOW!</option>
-<option value="bank_harda">ALLO BANK/BANK HARDA INTERNASIONAL</option>
-<option value="bank_mega">BANK MEGA</option>
-<option value="bank_mega_syr">BANK MEGA SYARIAH</option>
-<option value="bank_sinarmas_syr">BANK SINARMAS SYARIAH</option>
-<option value="bank_royal">BLU/BCA DIGITAL</option>
-<option value="bank_cimb">CIMB NIAGA/CIMB NIAGA SYARIAH</option>
-<option value="bank_danamon">DANAMON / DANAMON SYARIAH</option>
-<option value="bank_dompetku">DOMPETKU</option>
-<option value="bank_artos">JAGO/ARTOS</option>
-<option value="bank_mandiri">MANDIRI</option>
-<option value="bank_bii">MAYBANK INDONESIA</option>
-<option value="bank_yudha_bakti">NEO COMMERCE/YUDHA BHAKTI</option>
-<option value="bank_nationalnobu">NOBU (NATIONALNOBU) BANK</option>
-<option value="bank_ocbc">OCBC NISP</option>
-<option value="bank_panin">PANIN BANK</option>
-<option value="bank_sakuku">SAKUKU</option>
-<option value="bank_saldo_flip">SALDO FLIP</option>
-<option value="bank_kesejahteraan_ekonomi">SEABANK</option>
-<option value="bank_super">SUPERBANK</option>
-<option value="bank_bukopin">WOKEE/BUKOPIN</option>
-<option value="bank_krom">KROM BANK INDONESIA</option>
-<option value="bank_superflip">SUPERFLIP</option>
+            <option value="">-- Pilih Bank --</option>
+            <option value="bank_bca">BCA</option>
+            <option value="bank_bni">BNI</option>
+            <option value="bank_bri">BRI</option>
+            <option value="bank_bsm">BSI (BANK SYARIAH INDONESIA)</option>
+            <option value="bank_btn">BTN</option>
+            <option value="bank_permata">PERMATA</option>
+            <option value="bank_sinarmas">SINARMAS</option>
+            <option value="bank_tabungan_pensiunan_nasional">BTPN / JENIUS / BTPN WOW!</option>
+            <option value="bank_harda">ALLO BANK/BANK HARDA INTERNASIONAL</option>
+            <option value="bank_mega">BANK MEGA</option>
+            <option value="bank_mega_syr">BANK MEGA SYARIAH</option>
+            <option value="bank_sinarmas_syr">BANK SINARMAS SYARIAH</option>
+            <option value="bank_royal">BLU/BCA DIGITAL</option>
+            <option value="bank_cimb">CIMB NIAGA/CIMB NIAGA SYARIAH</option>
+            <option value="bank_danamon">DANAMON / DANAMON SYARIAH</option>
+            <option value="bank_dompetku">DOMPETKU</option>
+            <option value="bank_artos">JAGO/ARTOS</option>
+            <option value="bank_mandiri">MANDIRI</option>
+            <option value="bank_bii">MAYBANK INDONESIA</option>
+            <option value="bank_yudha_bakti">NEO COMMERCE/YUDHA BHAKTI</option>
+            <option value="bank_nationalnobu">NOBU (NATIONALNOBU) BANK</option>
+            <option value="bank_ocbc">OCBC NISP</option>
+            <option value="bank_panin">PANIN BANK</option>
+            <option value="bank_sakuku">SAKUKU</option>
+            <option value="bank_saldo_flip">SALDO FLIP</option>
+            <option value="bank_kesejahteraan_ekonomi">SEABANK</option>
+            <option value="bank_super">SUPERBANK</option>
+            <option value="bank_bukopin">WOKEE/BUKOPIN</option>
+            <option value="bank_krom">KROM BANK INDONESIA</option>
+            <option value="bank_superflip">SUPERFLIP</option>
           </select>
         </div>
       </div>
@@ -412,13 +413,12 @@
     <div class="result" id="result-ew"></div>
   </div>
 
-  <p class="footer-note">PROJECT SEDERHANA MP1</p>
-  <p class="footer-note">BELUM SEMPURNA, KARENA YANG SEMPURNA CUMA <b>KAMU</b></p>
+  <p class="footer-note">Verifikasi rekening sebelum transfer &bull; Data real-time</p>
 </div>
 
 <script>
-  // Panggil API lokal Vercel (bukan langsung ke rfpdev.me)
-  const BASE = '';
+  const API_KEY = "503c53df-222b-41f5-abb0-70563a22828a";
+  const BASE_URL = "https://rfpdev.xyz/api";
 
   function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach((b, i) => {
@@ -435,10 +435,14 @@
       : label;
   }
 
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
   function showResult(id, type, data) {
     const el = document.getElementById(id);
     if (type === 'success') {
-      const name   = data.customer_name  || '—';
+      const name   = data.customer_name  || data.account_name || data.name || '—';
       const number = data.account_number || data.phone_number || '—';
       const bank   = data.bank_name      || data.ewallet_name || '—';
       el.className = 'result show success';
@@ -461,10 +465,6 @@
     }
   }
 
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
   async function checkBank() {
     const bank   = document.getElementById('bank-select').value;
     const number = document.getElementById('bank-number').value.trim();
@@ -474,16 +474,20 @@
     document.getElementById('result-bank').className = 'result';
 
     try {
-      const res  = await fetch('/api/check-rekening', {
+      const res = await fetch(`${BASE_URL}/check-rekening`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY
+        },
         body: JSON.stringify({ account_number: number, bank_code: bank })
       });
       const json = await res.json();
-      if (json.status === 'success' && json.data) {
+
+      if ((json.status === 'success' || json.status === true || json.success === true) && json.data) {
         showResult('result-bank', 'success', json.data);
       } else {
-        showResult('result-bank', 'error', json.message || 'Rekening tidak ditemukan.');
+        showResult('result-bank', 'error', json.message || json.msg || 'Rekening tidak ditemukan.');
       }
     } catch (e) {
       showResult('result-bank', 'error', 'Gagal menghubungi server. Coba lagi.');
@@ -501,16 +505,20 @@
     document.getElementById('result-ew').className = 'result';
 
     try {
-      const res  = await fetch('/api/check-wallet', {
+      const res = await fetch(`${BASE_URL}/check-ewallet`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY
+        },
         body: JSON.stringify({ phone_number: number, wallet_code: wallet })
       });
       const json = await res.json();
-      if (json.status === 'success' && json.data) {
+
+      if ((json.status === 'success' || json.status === true || json.success === true) && json.data) {
         showResult('result-ew', 'success', json.data);
       } else {
-        showResult('result-ew', 'error', json.message || 'E-wallet tidak ditemukan.');
+        showResult('result-ew', 'error', json.message || json.msg || 'E-wallet tidak ditemukan.');
       }
     } catch (e) {
       showResult('result-ew', 'error', 'Gagal menghubungi server. Coba lagi.');
