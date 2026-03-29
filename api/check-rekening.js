@@ -1,18 +1,19 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
-  
-  const { account_number, bank_code } = req.body;
-  const API_KEY = process.env.API_KEY; // Ambil dari Vercel Dashboard
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const { account_number, bank_code } = req.body || {};
+  const apiKey = process.env.API_KEY;
 
   try {
     const response = await fetch('https://rfpdev.xyz/api/check-rekening', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ account_number, bank_code, api_key: API_KEY })
+      body: JSON.stringify({ account_number, bank_code, api_key: apiKey }),
     });
+
     const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ status: 'error', message: 'Server API Bermasalah' });
+    return res.status(500).json({ status: 'error', message: 'Gagal ke pusat' });
   }
 }
