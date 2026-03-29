@@ -1,7 +1,13 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/check-rekening", "destination": "/api/check-rekening.js" },
-    { "source": "/api/check-ewallet", "destination": "/api/check-ewallet.js" }
+    {
+      "source": "/api/check-rekening",
+      "destination": "/api/check-rekening.js"
+    },
+    {
+      "source": "/api/check-ewallet",
+      "destination": "/api/check-ewallet.js"
+    }
   ]
 }
