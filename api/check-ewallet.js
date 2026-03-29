@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('https://rfpdev.xyz/api/check-wallet', {
+    const response = await fetch('https://rfpdev.xyz/api/check-ewallet', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ phone_number, wallet_code, api_key: apiKey }),
