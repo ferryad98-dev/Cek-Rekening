@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // 1. Tambahkan Header CORS (Biar nggak diblokir browser sendiri)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -10,34 +9,31 @@ export default async function handler(req, res) {
   const { account_number, bank_code } = req.body || {};
   const apiKey = process.env.API_KEY;
 
-  // 2. Validasi Input (Biar nggak ngirim data kosong ke pusat)
-  if (!account_number || !bank_code) {
-    return res.status(400).json({ status: 'error', message: 'Nomor rekening dan kode bank wajib diisi' });
-  }
-
   try {
     const response = await fetch('https://rfpdev.xyz/api/check-rekening', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Accept': 'application/json' 
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
-      body: JSON.stringify({ 
-        account_number, 
-        bank_code, 
-        api_key: apiKey 
-      }),
+      body: JSON.stringify({ account_number, bank_code, api_key: apiKey }),
     });
 
-    // 3. Gunakan cara ini untuk baca JSON biar nggak crash kalau responnya kosong
-    const data = await response.json();
-    return res.status(200).json(data);
+    const contentType = response.headers.get("content-type");
+    
+    // Cek apakah balasannya beneran JSON?
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      const data = await response.json();
+      return res.status(200).json(data);
+    } else {
+      // Kalau dapetnya HTML (Cloudflare/Error page)
+      const textError = await response.text();
+      console.log("Respon bukan JSON:", textError.substring(0, 100)); // Liat dikit isinya di log
+      return res.status(500).json({ status: 'error', message: 'Server pusat memblokir akses (Cloudflare/Bot Detection)' });
+    }
 
   } catch (error) {
-    console.error("Error Detail:", error); // Muncul di log Vercel kalau gagal
-    return res.status(500).json({ 
-      status: 'error', 
-      message: 'Gagal menghubungi server pusat rfpdev' 
-    });
+    return res.status(500).json({ status: 'error', message: 'Gagal koneksi ke server pusat' });
   }
 }
